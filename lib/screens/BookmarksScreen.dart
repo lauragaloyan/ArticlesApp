@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 
 import '../AppRoutes.dart';
 
+// Fixme better to have single abstract class for Articles and different
+//  impl-s for Web and Bookmarked articles
 class BookmarksScreen extends StatefulWidget {
   @override
   _BookmarksScreenState createState() => _BookmarksScreenState();

@@ -2,6 +2,8 @@ import 'package:articles_app/widget/CircleImageWidget.dart';
 import 'package:flutter/material.dart';
 
 class ArticleItem extends StatelessWidget {
+  // Fixme Better to provide single viewModel instance that contains all data
+  //  fields (id, username, elapsedTime...)
   final int id;
   final String userName;
   final int elapsedTimeInHour;
@@ -27,6 +29,7 @@ class ArticleItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Fixme better to move _buildImageWidget() method outside from the build(context) method
     Widget _buildImageWidget() {
       return SizedBox(
         height: 100,
@@ -38,7 +41,7 @@ class ArticleItem extends StatelessWidget {
               width: 150,
               child: Image.network(
                 images[index].toString(),
-                fit: BoxFit.fill,
+                fit: BoxFit.fill, // Fixme better to use BoxFit.cover
               ),
             );
           },
@@ -60,6 +63,8 @@ class ArticleItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
+                    // Fixme flex: 7 does not affect on layout,
+                    // flex behaves similar to Android linear layout's width property
                     flex: 7,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,6 +93,7 @@ class ArticleItem extends StatelessWidget {
                           child: Text(
                             "$description",
                             style: Theme.of(context).textTheme.bodyText1,
+                            // Fixme default textAlign is TextAlign.start
                             textAlign: TextAlign.start,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

@@ -32,6 +32,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Fixme better to use PageView to persist page's state
       body: _pages[_selectedPageIndex]["page"],
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,

@@ -26,13 +26,17 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Fixme, move methods outside of the build(context)
     Widget _slideRightBackground() {
       return Container(
         color: Theme.of(context).accentColor,
+        // Fixme use container's align property, instead of Align widget
         child: Align(
+          alignment: Alignment.centerLeft,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              // Fixme better to use container's padding property, instead of SizedBox
               SizedBox(width: 20),
               Icon(Icons.delete, color: Colors.white),
               Text("Delete",
@@ -40,7 +44,6 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
                   textAlign: TextAlign.left)
             ],
           ),
-          alignment: Alignment.centerLeft,
         ),
       );
     }
@@ -70,6 +73,7 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
     return Scaffold(
       appBar: AppBar(title: Text("Articles"), centerTitle: true),
       body: RefreshIndicator(
+        // Fixme use another method for onRefresh, that returns Future
         onRefresh: () => _articlesViewModel.getArticleList(),
         child: StreamBuilder<ApiResponse<List<Article>>>(
           stream: _articlesViewModel.articleListStream,

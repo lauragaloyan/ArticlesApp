@@ -74,6 +74,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
                   ]),
                   SelectableText(article.description,
                       style: Theme.of(context).textTheme.bodyText2),
+                  // Fixme move to slivers
                   if (article.images.isNotEmpty) _buildGridView()
                 ],
               )),
@@ -83,6 +84,7 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
   }
 
   Widget _buildGridView() {
+    // Fixme With CustomScrollView use only slivers
     return GridView(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
