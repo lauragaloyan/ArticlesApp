@@ -51,52 +51,47 @@ class _ArticleDetailsScreenState extends State<ArticleDetailsScreen> {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: CustomScrollView(slivers: [
-              SliverList(
-                  delegate: SliverChildListDelegate(
-                [
-                  Text(
-                    article.title,
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Raleway",
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  Row(children: [
-                    Text(
-                      "${article.userName} - ${article.elapsedTimeInHour} hrs."
-                      " ago",
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                    Flexible(fit: FlexFit.tight, child: SizedBox()),
-                    CircleImageWidget(article.userImage)
-                  ]),
-                  SelectableText(article.description,
-                      style: Theme.of(context).textTheme.bodyText2),
-                  // Fixme move to slivers
-                  if (article.images.isNotEmpty) _buildGridView()
-                ],
-              )),
+              _buildSliverList(),
+              if (article.images.isNotEmpty) _buildGridView()
             ]),
           ),
         ));
   }
 
+  Widget _buildSliverList() {
+    return SliverList(
+        delegate: SliverChildListDelegate(
+      [
+        Text(article.title,
+            style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Raleway")),
+        Row(children: [
+          Text(
+            "${article.userName} - ${article.elapsedTimeInHour} hrs. ago",
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+          Flexible(fit: FlexFit.tight, child: SizedBox()),
+          CircleImageWidget(article.userImage)
+        ]),
+        SelectableText(article.description,
+            style: Theme.of(context).textTheme.bodyText2),
+      ],
+    ));
+  }
+
   Widget _buildGridView() {
-    // Fixme With CustomScrollView use only slivers
-    return GridView(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(top: 24),
-      children: article.images.map((data) {
-        return GridTile(child: Image.network(data, fit: BoxFit.cover));
-      }).toList(),
+    return SliverGrid(
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
           childAspectRatio: 1,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8),
+      delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+        return GridTile(
+            child: Image.network(article.images[index], fit: BoxFit.cover));
+      }, childCount: article.images.length),
     );
   }
 

@@ -57,16 +57,7 @@ class SearchBar extends SearchDelegate {
           itemCount: suggestionList.length,
           itemBuilder: (context, index) {
             final item = suggestionList[index];
-            return ArticleItem(
-              id: item.id,
-              userName: item.userName,
-              elapsedTimeInHour: item.elapsedTimeInHour,
-              isBookmarked: item.isBookmarked,
-              userImage: item.userImage,
-              title: item.title,
-              description: item.description,
-              images: item.images,
-            );
+            return ArticleItem(article: item);
           });
   }
 }

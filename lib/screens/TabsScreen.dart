@@ -11,30 +11,37 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  List<Map<String, Object>> _pages;
+  PageController _pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
+      _pageController.jumpToPage(index);
     });
-  }
-
-  @override
-  void initState() {
-    _pages = [
-      {"page": ArticlesScreen(), "title": "Articles"},
-      {"page": BookmarksScreen(), "title": "Bookmarks"}
-    ];
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Fixme better to use PageView to persist page's state
-      body: _pages[_selectedPageIndex]["page"],
-      bottomNavigationBar: BottomNavigationBar(
+        body: _buildPageView(),
+        bottomNavigationBar: _buildBottomNavigationBar());
+  }
+
+  Widget _buildPageView() => PageView(
+        onPageChanged: (page) => _selectPage(page),
+        controller: _pageController,
+        children: <Widget>[
+          ArticlesScreen(),
+          BookmarksScreen(),
+        ],
+      );
+
+  Widget _buildBottomNavigationBar() => BottomNavigationBar(
         onTap: _selectPage,
         backgroundColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.blueGrey.shade400,
@@ -51,7 +58,5 @@ class _TabsScreenState extends State<TabsScreen> {
               icon: Icon(Icons.bookmark_border_rounded),
               label: "Bookmarks"),
         ],
-      ),
-    );
-  }
+      );
 }

@@ -26,50 +26,6 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Fixme, move methods outside of the build(context)
-    Widget _slideRightBackground() {
-      return Container(
-        color: Theme.of(context).accentColor,
-        // Fixme use container's align property, instead of Align widget
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              // Fixme better to use container's padding property, instead of SizedBox
-              SizedBox(width: 20),
-              Icon(Icons.delete, color: Colors.white),
-              Text("Delete",
-                  style: TextStyle(color: Colors.white),
-                  textAlign: TextAlign.left)
-            ],
-          ),
-        ),
-      );
-    }
-
-    Widget _buildDismissibleWidget(List<Article> articles, int index) {
-      articlesList = articles;
-      final item = articles[index];
-      return Dismissible(
-          key: Key(item.id.toString()),
-          background: _slideRightBackground(),
-          direction: DismissDirection.startToEnd,
-          onDismissed: (_) => _removeArticle(item.id),
-          child: ArticleItem(
-            id: item.id,
-            userName: item.userName,
-            elapsedTimeInHour: item.elapsedTimeInHour,
-            isBookmarked: item.isBookmarked,
-            userImage: item.userImage,
-            title: item.title,
-            description: item.description,
-            images: item.images,
-            onRemoved: _removeArticle,
-            onTap: () => _openDetails(item),
-          ));
-    }
-
     return Scaffold(
       appBar: AppBar(title: Text("Articles"), centerTitle: true),
       body: RefreshIndicator(
@@ -100,6 +56,36 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
         ),
       ),
     );
+  }
+
+  Widget _slideRightBackground() => Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(20),
+        color: Theme.of(context).accentColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Icon(Icons.delete, color: Colors.white),
+            Text("Delete",
+                style: TextStyle(color: Colors.white),
+                textAlign: TextAlign.left)
+          ],
+        ),
+      );
+
+  Widget _buildDismissibleWidget(List<Article> articles, int index) {
+    articlesList = articles;
+    final item = articles[index];
+    return Dismissible(
+        key: Key(item.id.toString()),
+        background: _slideRightBackground(),
+        direction: DismissDirection.startToEnd,
+        onDismissed: (_) => _removeArticle(item.id),
+        child: ArticleItem(
+          article: item,
+          onRemoved: _removeArticle,
+          onTap: () => _openDetails(item),
+        ));
   }
 
   @override

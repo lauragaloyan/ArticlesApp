@@ -19,7 +19,7 @@ class ArticlesViewModel {
     _articleRepo = ArticleRepo();
   }
 
-  getArticleList() async {
+  Future<void> getArticleList() async {
     articleListSink.add(ApiResponse.loading());
     try {
       var articles = await _articleRepo.getArticles();
@@ -30,7 +30,7 @@ class ArticlesViewModel {
     }
   }
 
-  getBookmarkedArticles() async {
+  Future<void> getBookmarkedArticles() async {
     try {
       var bookmarkedArticles = await _articleRepo.fetchCachedArticles();
       articleListSink.add(ApiResponse.completed(bookmarkedArticles));

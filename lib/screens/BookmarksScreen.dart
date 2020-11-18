@@ -65,14 +65,7 @@ class _BookmarksScreenState extends State<BookmarksScreen> {
         direction: DismissDirection.startToEnd,
         onDismissed: (direction) => _removeArticle(item.id),
         child: ArticleItem(
-            id: item.id,
-            userName: item.userName,
-            elapsedTimeInHour: item.elapsedTimeInHour,
-            isBookmarked: item.isBookmarked,
-            userImage: item.userImage,
-            title: item.title,
-            description: item.description,
-            images: item.images,
+            article: item,
             onTap: () => _openDetails(item),
             onRemoved: _removeArticle),
       );

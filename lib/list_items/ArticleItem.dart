@@ -1,55 +1,16 @@
+import 'package:articles_app/data/Article.dart';
 import 'package:articles_app/widget/CircleImageWidget.dart';
 import 'package:flutter/material.dart';
 
 class ArticleItem extends StatelessWidget {
-  // Fixme Better to provide single viewModel instance that contains all data
-  //  fields (id, username, elapsedTime...)
-  final int id;
-  final String userName;
-  final int elapsedTimeInHour;
-  final bool isBookmarked;
-  final String userImage;
-  final String title;
-  final String description;
-  final List<String> images;
+  final Article article;
   final Function onRemoved;
   final Function onTap;
 
-  const ArticleItem(
-      {this.id,
-      this.userName,
-      this.elapsedTimeInHour,
-      this.isBookmarked,
-      this.userImage,
-      this.title,
-      this.description,
-      this.images,
-      this.onRemoved,
-      this.onTap});
+  const ArticleItem({this.article, this.onRemoved, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    // Fixme better to move _buildImageWidget() method outside from the build(context) method
-    Widget _buildImageWidget() {
-      return SizedBox(
-        height: 100,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.only(right: 10, top: 10),
-              width: 150,
-              child: Image.network(
-                images[index].toString(),
-                fit: BoxFit.fill, // Fixme better to use BoxFit.cover
-              ),
-            );
-          },
-          itemCount: images.length,
-        ),
-      );
-    }
-
     return InkWell(
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
@@ -63,38 +24,28 @@ class ArticleItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                    // Fixme flex: 7 does not affect on layout,
-                    // flex behaves similar to Android linear layout's width property
-                    flex: 7,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "$userName - $elapsedTimeInHour hrs ago",
-                          style: Theme.of(context).textTheme.bodyText1,
-                          textAlign: TextAlign.start,
-                        ),
+                            "${article.userName} - ${article.elapsedTimeInHour} hrs ago",
+                            style: Theme.of(context).textTheme.bodyText1),
                         Padding(
                           padding: const EdgeInsets.only(top: 8),
-                          child: Text(
-                            "$title",
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "Raleway",
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                          ),
+                          child: Text("${article.title}",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Raleway",
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 12),
                           child: Text(
-                            "$description",
+                            "$article.description",
                             style: Theme.of(context).textTheme.bodyText1,
-                            // Fixme default textAlign is TextAlign.start
-                            textAlign: TextAlign.start,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -102,10 +53,10 @@ class ArticleItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  CircleImageWidget(userImage)
+                  CircleImageWidget(article.userImage)
                 ],
               ),
-              if (images.isNotEmpty) _buildImageWidget()
+              if (article.images.isNotEmpty) _buildImageWidget()
             ],
           ),
         ),
@@ -113,4 +64,22 @@ class ArticleItem extends StatelessWidget {
       onTap: onTap,
     );
   }
+
+  Widget _buildImageWidget() => SizedBox(
+        height: 100,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: const EdgeInsets.only(right: 10, top: 10),
+              width: 150,
+              child: Image.network(
+                article.images[index].toString(),
+                fit: BoxFit.cover,
+              ),
+            );
+          },
+          itemCount: article.images.length,
+        ),
+      );
 }
